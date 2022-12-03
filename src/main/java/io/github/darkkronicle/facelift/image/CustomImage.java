@@ -9,7 +9,6 @@ import net.minecraft.client.texture.NativeImage;
 import net.minecraft.client.texture.NativeImageBackedTexture;
 import org.apache.commons.io.FileUtils;
 import org.lwjgl.opengl.GL11;
-import org.lwjgl.stb.STBImage;
 import org.lwjgl.system.MemoryUtil;
 
 import java.io.File;
