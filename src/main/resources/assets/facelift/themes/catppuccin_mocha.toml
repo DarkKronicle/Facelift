@@ -1,0 +1,23 @@
+# https://github.com/catppuccin/catppuccin
+name = "catppuccin_mocha"
+
+accent = "#cba6f7"
+
+pop0 = "#f5c2e7"
+pop1 = "#a6e3a1"
+pop2 = "#94e2d5"
+pop3 = "#89dceb"
+pop4 = "#b4befe"
+
+text = "#cdd6f4"
+subtext1 = "#bac2de"
+subtext0 = "#a6adc8"
+overlay2 = "#9399b2"
+overlay1 = "#7f849c"
+overlay0 = "#6c7086"
+surface2 = "#585b70"
+surface1 = "#45475a"
+surface0 = "#313244"
+base = "#1e1e2e"
+mantle = "#181825"
+crust = "#11111b"

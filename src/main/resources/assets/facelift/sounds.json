@@ -1,0 +1,30 @@
+{
+  "ui_hover": {
+    "sounds": [
+      "facelift:ui_hover"
+    ]
+  },
+  "button_click": {
+    "sounds": [
+      "facelift:button_click"
+    ]
+  },
+  "click_up": {
+    "sounds": [
+      "facelift:click_up"
+    ]
+  },
+  "click_down": {
+    "sounds": [
+      "facelift:click_down"
+    ]
+  },
+  "menu_music": {
+    "sounds": [
+      "facelift:menu/daydreamer",
+      "facelift:menu/echolocation",
+      "facelift:menu/lightscameraaction",
+      "facelift:menu/sharkatzor"
+    ]
+  }
+}

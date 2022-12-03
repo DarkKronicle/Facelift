@@ -1,0 +1,26 @@
+{
+  "schemaVersion": 1,
+  "id": "facelift",
+  "version": "${version}",
+  "name": "ModernUI",
+  "description": "",
+  "authors": [],
+  "contact": {},
+  "license": "MPL-2.0",
+  "icon": "assets/facelift/icon.png",
+  "environment": "*",
+  "accessWidener": "facelift.accesswidener",
+  "entrypoints": {
+    "client": [
+      "io.github.darkkronicle.facelift.Facelift"
+    ]
+  },
+  "mixins": [
+    "facelift.mixins.json"
+  ],
+  "depends": {
+    "fabricloader": ">=0.14.10",
+    "fabric": "*",
+    "minecraft": ">=1.19"
+  }
+}
