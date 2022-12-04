@@ -5,6 +5,7 @@ import com.electronwill.nightconfig.toml.TomlParser;
 import io.github.darkkronicle.darkkore.config.impl.ConfigObject;
 import io.github.darkkronicle.darkkore.config.impl.NightConfigObject;
 import io.github.darkkronicle.facelift.Facelift;
+import io.github.darkkronicle.facelift.config.FaceliftConfig;
 import net.fabricmc.fabric.api.resource.IdentifiableResourceReloadListener;
 import net.minecraft.resource.ResourceManager;
 import net.minecraft.resource.SynchronousResourceReloader;
@@ -15,7 +16,7 @@ import java.io.InputStream;
 import java.util.HashMap;
 import java.util.Map;
 
-public class ThemeHandler implements SynchronousResourceReloader, IdentifiableResourceReloadListener {
+public class ThemeHandler {
 
     private final static ThemeHandler INSTANCE = new ThemeHandler();
 
@@ -27,16 +28,14 @@ public class ThemeHandler implements SynchronousResourceReloader, IdentifiableRe
 
     private ThemeHandler() {}
 
-
-    @Override
-    public Identifier getFabricId() {
-        return new Identifier(Facelift.MOD_ID, "themes");
-    }
-
     public Theme loadFromConfig(ConfigObject obj) {
         ConfigTheme config = new ConfigTheme();
         config.load(obj);
         return config;
+    }
+
+    public Theme getConfiguredTheme() {
+        return get(FaceliftConfig.getInstance().getColorTheme().getValue());
     }
 
     public Theme loadFromToml(InputStream stream) {
@@ -50,7 +49,6 @@ public class ThemeHandler implements SynchronousResourceReloader, IdentifiableRe
         return null;
     }
 
-    @Override
     public void reload(ResourceManager manager) {
         themes.clear();
         manager.findResources("themes", identifier -> identifier.getPath().endsWith(".toml")).forEach(((identifier, resource) -> {

@@ -54,7 +54,7 @@ dependencies {
     modImplementation "com.terraformersmc:modmenu:${project.modmenu_version}"
     modImplementation "io.wispforest:owo-lib:${project.owo_version}"
 
-    include modImplementation("com.github.0x3C50:Renderer:master-SNAPSHOT")
+    include modImplementation("com.github.0x3C50:Renderer:90737050df")
 
 }
 

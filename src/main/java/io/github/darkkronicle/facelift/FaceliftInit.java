@@ -7,6 +7,7 @@ import io.github.darkkronicle.darkkore.hotkeys.HotkeySettings;
 import io.github.darkkronicle.darkkore.intialization.Initializer;
 import io.github.darkkronicle.darkkore.intialization.profiles.PlayerContextCheck;
 import io.github.darkkronicle.darkkore.util.FileUtil;
+import io.github.darkkronicle.facelift.shader.Shaders;
 import net.minecraft.client.MinecraftClient;
 import org.lwjgl.glfw.GLFW;
 
@@ -20,7 +21,7 @@ public class FaceliftInit implements Initializer {
 
     @Override
     public void init() {
-
+        Shaders.init();
     }
 
 }

@@ -33,6 +33,9 @@ public class FaceliftConfig extends ModConfig {
             new ExtendedColor(new Color(0, 0, 0, 80), ExtendedColor.ChromaOptions.getDefault())
     );
 
+    @Getter
+    private final StringOption colorTheme = new StringOption("themeColor", "facelift.option.themecolor", "facelift.option.info.themecolor", "catppuccin_mocha");
+
     public static FaceliftConfig getInstance() {
         return INSTANCE;
     }

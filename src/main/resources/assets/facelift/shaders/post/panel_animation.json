@@ -1,0 +1,17 @@
+{
+  "targets": [
+    "swap"
+  ],
+  "passes": [
+    {
+      "name": "facelift:panel_animation",
+      "intarget": "minecraft:main",
+      "outtarget": "swap"
+    },
+    {
+      "name": "facelift:panel_animation",
+      "intarget": "swap",
+      "outtarget": "minecraft:main"
+    }
+  ]
+}

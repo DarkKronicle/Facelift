@@ -1,29 +1,32 @@
 package io.github.darkkronicle.facelift.title;
 
 import io.github.darkkronicle.facelift.mixin.SplashOverlayAccessor;
-import io.wispforest.owo.ui.base.BaseOwoScreen;
+import io.github.darkkronicle.facelift.shader.Renderable;
+import io.github.darkkronicle.facelift.ui.AnimatableOwoScreen;
 import io.wispforest.owo.ui.container.FlowLayout;
+import ladysnake.satin.api.managed.ManagedShaderEffect;
 import me.x150.renderer.renderer.MSAAFramebuffer;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.screen.Overlay;
+import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.gui.screen.SplashOverlay;
 import net.minecraft.client.util.math.MatrixStack;
-import org.lwjgl.glfw.GLFW;
+import org.jetbrains.annotations.Nullable;
 
-import java.awt.desktop.QuitHandler;
+public abstract class AbstractTitleMenu extends AnimatableOwoScreen<FlowLayout> implements TitleMenu {
 
-public abstract class AbstractTitleMenu extends BaseOwoScreen<FlowLayout> implements TitleMenu {
-
-    protected AbstractTitleMenu() {
-        super();
+    public AbstractTitleMenu(
+            Screen parent, ManagedShaderEffect animation,
+            @Nullable Runnable setShaderConfig
+    ) {
+        super(parent, animation, setShaderConfig);
     }
 
-
     @Override
-    public void render(MatrixStack matrices, int mouseX, int mouseY, float partialTicks) {
+    protected void rawRender(MatrixStack matrices, int mouseX, int mouseY, float partialTicks) {
         renderBackground(matrices, mouseX, mouseY, partialTicks);
         MSAAFramebuffer.use(8, () ->
-            super.render(matrices, mouseX, mouseY, partialTicks)
+            super.rawRender(matrices, mouseX, mouseY, partialTicks)
         );
     }
 

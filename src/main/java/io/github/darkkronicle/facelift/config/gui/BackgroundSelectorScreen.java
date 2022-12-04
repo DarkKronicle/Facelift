@@ -2,7 +2,11 @@ package io.github.darkkronicle.facelift.config.gui;
 
 import io.github.darkkronicle.darkkore.util.render.RenderUtil;
 import io.github.darkkronicle.facelift.config.FaceliftConfig;
+import io.github.darkkronicle.facelift.shader.Shaders;
+import io.github.darkkronicle.facelift.theme.Theme;
+import io.github.darkkronicle.facelift.theme.ThemeHandler;
 import io.github.darkkronicle.facelift.title.ModernTitleMenu;
+import io.github.darkkronicle.facelift.ui.AnimatableOwoScreen;
 import io.github.darkkronicle.facelift.ui.background.BackgroundHandler;
 import io.github.darkkronicle.facelift.ui.background.BackgroundRenderer;
 import io.github.darkkronicle.facelift.ui.config.BackgroundSelector;
@@ -13,10 +17,11 @@ import io.wispforest.owo.ui.container.GridLayout;
 import io.wispforest.owo.ui.container.ScrollContainer;
 import io.wispforest.owo.ui.container.VerticalFlowLayout;
 import io.wispforest.owo.ui.core.*;
-import io.wispforest.owo.ui.core.Color;
 import io.wispforest.owo.ui.core.Insets;
 import io.wispforest.owo.ui.util.UIErrorToast;
+import me.x150.renderer.renderer.Renderer2d;
 import me.x150.renderer.renderer.font.TTFFontRenderer;
+import me.x150.renderer.renderer.util.BlurMaskFramebuffer;
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.text.Text;
 import net.minecraft.util.Util;
@@ -29,7 +34,7 @@ import java.io.IOException;
 import java.nio.file.Path;
 import java.util.List;
 
-public class BackgroundSelectorScreen extends BaseOwoScreen<VerticalFlowLayout> {
+public class BackgroundSelectorScreen extends AnimatableOwoScreen<VerticalFlowLayout> {
 
     private BackgroundRenderer renderer;
     private File selected;
@@ -38,6 +43,7 @@ public class BackgroundSelectorScreen extends BaseOwoScreen<VerticalFlowLayout> 
     private File[] files;
 
     public BackgroundSelectorScreen(ModernTitleMenu screen, TTFFontRenderer font) {
+        super(screen, Shaders.PANEL_ANIMATION_SHADER, () -> Shaders.PANEL_ANIMATION_SHADER.setUniformValue("Panels", 5));
         parent = screen;
         this.font = font;
         this.renderer = parent.getBackground();
@@ -67,8 +73,14 @@ public class BackgroundSelectorScreen extends BaseOwoScreen<VerticalFlowLayout> 
         return OwoUIAdapter.create(this, Containers::verticalFlow);
     }
 
+    private io.wispforest.owo.ui.core.Color convert(io.github.darkkronicle.darkkore.util.Color color) {
+        return new io.wispforest.owo.ui.core.Color(color.floatRed(), color.floatGreen(), color.floatBlue(), color.floatAlpha());
+    }
+
     @Override
     protected void build(VerticalFlowLayout rootComponent) {
+        super.build(rootComponent);
+        Theme theme = ThemeHandler.getInstance().getConfiguredTheme();
         rootComponent.horizontalAlignment(HorizontalAlignment.CENTER);
         GridLayout grid = Containers.grid(Sizing.content(), Sizing.content(), (int) Math.ceil(files.length / 2f), 2);
         ScrollContainer<GridLayout> scroll = Containers.verticalScroll(Sizing.content(), Sizing.fill(100), grid);
@@ -81,11 +93,21 @@ public class BackgroundSelectorScreen extends BaseOwoScreen<VerticalFlowLayout> 
                 row++;
             }
             renderer.loadAsync(Util.getMainWorkerExecutor());
-            grid.child(new BackgroundSelector(file, 5, 8, (button) -> {
-                selected = file;
-                renderer = BackgroundHandler.getInstance().getRenderer(file);
-                renderer.loadAsync(Util.getMainWorkerExecutor());
-            }).cleanText(font, Text.of(file.getName()), Insets.of(3), new Color(1, 1, 1, 1)), row, col);
+            String name = file.getName();
+            if (name.length() > 19) {
+                name = name.substring(0, 16) + "...";
+            }
+            grid.child(
+                    new BackgroundSelector(file, 5, 8, (button) -> {
+                        selected = file;
+                        renderer = BackgroundHandler.getInstance().getRenderer(file);
+                        renderer.loadAsync(Util.getMainWorkerExecutor());
+                    }).cleanText(font, Text.of(name), Insets.of(3), convert(theme.text()))
+                      .backgroundColor(convert(theme.surface0()))
+                      .borderColor(convert(theme.accent()))
+                      .hoverColor(convert(theme.overlay0()))
+                      .margins(Insets.of(6))
+                    , row, col);
             col++;
         }
         rootComponent.child(scroll);
@@ -96,12 +118,17 @@ public class BackgroundSelectorScreen extends BaseOwoScreen<VerticalFlowLayout> 
     }
 
     @Override
-    public void render(MatrixStack matrices, int mouseX, int mouseY, float delta) {
+    protected void rawRender(MatrixStack matrices, int mouseX, int mouseY, float delta) {
         if (renderer != null) {
             renderer.render(matrices, mouseX, mouseY, delta);
+//            BlurMaskFramebuffer.useAndDraw(() -> {
+//                Renderer2d.renderQuad(matrices, me.x150.renderer.renderer.color.Color.WHITE, 0, 0, client.getWindow().getScaledWidth(), client.getWindow().getScaledHeight());
+//            }, 4f);
         }
-        RenderUtil.drawRectangle(matrices, 0, 0, client.getWindow().getScaledWidth(), client.getWindow().getScaledHeight(), FaceliftConfig.getInstance().getBackgroundOverlay().getValue());
-        super.render(matrices, mouseX, mouseY, delta);
+        RenderUtil.drawRectangle(matrices, 0, 0, client.getWindow().getScaledWidth(), client.getWindow().getScaledHeight(),
+                FaceliftConfig.getInstance().getBackgroundOverlay().getValue()
+        );
+        super.rawRender(matrices, mouseX, mouseY, delta);
     }
 
     @Override
@@ -112,7 +139,11 @@ public class BackgroundSelectorScreen extends BaseOwoScreen<VerticalFlowLayout> 
         boolean anySuccess = false;
         for (Path path : paths) {
             File file = path.toFile();
-            if (!file.exists() || (!file.isDirectory() && !(file.getName().endsWith(".png") || file.getName().endsWith(".jpg") || file.getName().endsWith(".gif")))) {
+            if (!file.exists() || (
+                    !file.isDirectory() && !(
+                            file.getName().endsWith(".png") || file.getName().endsWith(".jpg") || file.getName().endsWith(".gif")
+                    )
+            )) {
                 incompatibleError = true;
                 incompatible.append(file.getName()).append(", ");
                 continue;

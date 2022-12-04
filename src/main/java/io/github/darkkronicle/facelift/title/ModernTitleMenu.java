@@ -8,6 +8,8 @@ import io.github.darkkronicle.facelift.FaceliftResourceLoader;
 import io.github.darkkronicle.facelift.config.FaceliftConfig;
 import io.github.darkkronicle.facelift.config.gui.BackgroundSelectorScreen;
 import io.github.darkkronicle.facelift.impl.ModMenuSupplier;
+import io.github.darkkronicle.facelift.shader.Renderable;
+import io.github.darkkronicle.facelift.shader.Shaders;
 import io.github.darkkronicle.facelift.theme.Theme;
 import io.github.darkkronicle.facelift.theme.ThemeHandler;
 import io.github.darkkronicle.facelift.ui.background.BackgroundHandler;
@@ -20,6 +22,7 @@ import io.wispforest.owo.ui.container.HorizontalFlowLayout;
 import io.wispforest.owo.ui.container.VerticalFlowLayout;
 import io.wispforest.owo.ui.core.*;
 import io.wispforest.owo.ui.core.Insets;
+import ladysnake.satin.api.managed.ManagedShaderEffect;
 import lombok.Getter;
 import lombok.Setter;
 import me.x150.renderer.renderer.font.TTFFontRenderer;
@@ -31,17 +34,12 @@ import net.minecraft.client.gui.screen.option.OptionsScreen;
 import net.minecraft.client.gui.screen.world.SelectWorldScreen;
 import net.minecraft.client.gui.widget.ButtonWidget;
 import net.minecraft.client.realms.gui.screen.RealmsMainScreen;
-import net.minecraft.client.texture.TextureManager;
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.text.Text;
 import net.minecraft.util.Identifier;
-import net.minecraft.util.Util;
 import org.jetbrains.annotations.NotNull;
 
 import java.awt.*;
-import java.nio.file.Path;
-import java.util.concurrent.CompletableFuture;
-import java.util.concurrent.Executor;
 
 public class ModernTitleMenu extends AbstractTitleMenu {
 
@@ -49,6 +47,10 @@ public class ModernTitleMenu extends AbstractTitleMenu {
     private Theme theme;
     @Getter
     private BackgroundRenderer background;
+
+    public ModernTitleMenu() {
+        super(null, Shaders.PANEL_ANIMATION_SHADER, () -> Shaders.PANEL_ANIMATION_SHADER.setUniformValue("Panels", 5));
+    }
 
     @Override
     public <T extends Element> void convertElement(T element) {
@@ -109,9 +111,9 @@ public class ModernTitleMenu extends AbstractTitleMenu {
 
     protected void setup() {
         client = MinecraftClient.getInstance();
-        theme = ThemeHandler.getInstance().get("catppuccin_mocha");
+        theme = ThemeHandler.getInstance().getConfiguredTheme();
         fontRenderer = TTFFontRenderer.create(
-                FaceliftResourceLoader.getFont("sourcesans-light.ttf").orElseGet(() -> new Font(Font.SANS_SERIF, Font.PLAIN, 11)),
+                FaceliftResourceLoader.getFont("sourcesans-light.ttf").orElseGet(() -> new Font(Font.SANS_SERIF, Font.PLAIN, 23)),
                 11
         );
         setBackgroundToConfig();

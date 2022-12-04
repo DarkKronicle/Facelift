@@ -2,7 +2,6 @@ package io.github.darkkronicle.facelift.ui.components;
 
 import com.mojang.blaze3d.systems.RenderSystem;
 import io.github.darkkronicle.facelift.image.CustomImage;
-import io.github.darkkronicle.facelift.ui.UIShaders;
 import io.wispforest.owo.ui.core.AnimatableProperty;
 import io.wispforest.owo.ui.core.Color;
 import net.minecraft.client.render.*;
@@ -56,7 +55,7 @@ public class TextureComponent extends io.wispforest.owo.ui.component.TextureComp
 
         matrices.scale((float) regionWidth / textureWidth, (float) regionHeight / textureHeight, 0);
 
-        RenderSystem.setShader(UIShaders.CustomShader.ANTI_ALIASED_TEXTURE::getShader);
+        RenderSystem.setShader(GameRenderer::getPositionTexShader);
         Matrix4f matrix = matrices.peek().getPositionMatrix();
         BufferBuilder bufferBuilder = Tessellator.getInstance().getBuffer();
         bufferBuilder.begin(VertexFormat.DrawMode.QUADS, VertexFormats.POSITION_TEXTURE);

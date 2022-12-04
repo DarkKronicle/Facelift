@@ -9,6 +9,8 @@ import net.fabricmc.api.ClientModInitializer;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.fabricmc.fabric.api.resource.ResourceManagerHelper;
+import net.minecraft.client.gl.Framebuffer;
+import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.resource.ResourceType;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -19,11 +21,12 @@ public class Facelift implements ClientModInitializer {
 
     public final static String MOD_ID = "facelift";
     public final static Logger LOGGER = LogManager.getLogger("facelift");
+    public static Screen lastScreen;
+    public static Framebuffer renderToBuffer;
 
     @Override
     public void onInitializeClient() {
         ResourceManagerHelper.get(ResourceType.CLIENT_RESOURCES).registerReloadListener(new FaceliftResourceLoader());
-        ResourceManagerHelper.get(ResourceType.CLIENT_RESOURCES).registerReloadListener(ThemeHandler.getInstance());
         Sounds.register();
         InitializationHandler.getInstance().registerInitializer("facelift", 0, new FaceliftInit());
         ConfigurationManager.getInstance().add(FaceliftConfig.getInstance());

@@ -48,7 +48,7 @@ public class BackgroundSelector extends CleanButtonComponent {
                 image = ImageHandler.getInstance().loadImage(imageFile);
             }
         }
-        texture(image, 0, 0, 160, 120, 160, 120, Insets.bottom(2), null);
+        texture(image, 0, 0, 120, 80, 120, 80, Insets.bottom(2), null);
     }
 
 

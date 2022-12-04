@@ -1,6 +1,7 @@
 package io.github.darkkronicle.facelift;
 
 import io.github.darkkronicle.facelift.config.FaceliftConfig;
+import io.github.darkkronicle.facelift.theme.ThemeHandler;
 import net.fabricmc.fabric.api.resource.IdentifiableResourceReloadListener;
 import net.minecraft.resource.ResourceManager;
 import net.minecraft.resource.SynchronousResourceReloader;
@@ -50,5 +51,6 @@ public class FaceliftResourceLoader implements SynchronousResourceReloader, Iden
                 Facelift.LOGGER.warn("Could not load font " + identifier);
             }
         }));
+        ThemeHandler.getInstance().reload(manager);
     }
 }
