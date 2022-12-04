@@ -8,7 +8,7 @@ import io.github.darkkronicle.darkkore.config.options.StringOption;
 import io.github.darkkronicle.darkkore.util.Color;
 import io.github.darkkronicle.darkkore.util.FileUtil;
 import io.github.darkkronicle.facelift.Facelift;
-import io.github.darkkronicle.facelift.image.ImageHandler;
+import io.github.darkkronicle.facelift.render.image.ImageHandler;
 import lombok.Getter;
 import net.minecraft.util.Util;
 

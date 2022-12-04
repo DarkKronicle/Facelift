@@ -2,7 +2,7 @@ package io.github.darkkronicle.facelift.mixin;
 
 import io.github.darkkronicle.facelift.Facelift;
 import io.github.darkkronicle.facelift.sound.Sounds;
-import io.github.darkkronicle.facelift.ui.AnimatableOwoScreen;
+import io.github.darkkronicle.facelift.render.animation.AnimatableOwoScreen;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gl.Framebuffer;
 import net.minecraft.client.gui.screen.Screen;

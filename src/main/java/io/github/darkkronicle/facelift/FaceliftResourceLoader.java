@@ -1,7 +1,7 @@
 package io.github.darkkronicle.facelift;
 
 import io.github.darkkronicle.facelift.config.FaceliftConfig;
-import io.github.darkkronicle.facelift.theme.ThemeHandler;
+import io.github.darkkronicle.facelift.render.theme.ThemeHandler;
 import net.fabricmc.fabric.api.resource.IdentifiableResourceReloadListener;
 import net.minecraft.resource.ResourceManager;
 import net.minecraft.resource.SynchronousResourceReloader;

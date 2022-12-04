@@ -1,6 +1,6 @@
 package io.github.darkkronicle.facelift.mixin;
 
-import io.github.darkkronicle.facelift.title.TitleMenuHandler;
+import io.github.darkkronicle.facelift.render.title.TitleMenuHandler;
 import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.gui.screen.TitleScreen;
 import net.minecraft.text.Text;

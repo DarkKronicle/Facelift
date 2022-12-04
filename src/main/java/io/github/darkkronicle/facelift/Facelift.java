@@ -4,7 +4,6 @@ import io.github.darkkronicle.darkkore.config.ConfigurationManager;
 import io.github.darkkronicle.darkkore.intialization.InitializationHandler;
 import io.github.darkkronicle.facelift.config.FaceliftConfig;
 import io.github.darkkronicle.facelift.sound.Sounds;
-import io.github.darkkronicle.facelift.theme.ThemeHandler;
 import net.fabricmc.api.ClientModInitializer;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
