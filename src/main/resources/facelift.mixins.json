@@ -6,8 +6,10 @@
   "mixins": [
   ],
   "client": [
+    "GameRendererMixin",
     "MinecraftClientMixin",
     "MusicTrackerMixin",
+    "ScreenMixin",
     "SplashOverlayAccessor",
     "TitleScreenMixin"
   ],

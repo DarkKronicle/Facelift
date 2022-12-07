@@ -1,13 +1,17 @@
 package io.github.darkkronicle.facelift.mixin;
 
 import io.github.darkkronicle.facelift.Facelift;
+import io.github.darkkronicle.facelift.render.screen.AnimatableScreen;
+import io.github.darkkronicle.facelift.render.shader.Shaders;
 import io.github.darkkronicle.facelift.sound.Sounds;
-import io.github.darkkronicle.facelift.render.animation.AnimatableOwoScreen;
+import io.wispforest.owo.ui.core.Easing;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gl.Framebuffer;
 import net.minecraft.client.gui.screen.Screen;
+import net.minecraft.client.render.GameRenderer;
 import net.minecraft.sound.MusicSound;
 import org.jetbrains.annotations.Nullable;
+import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
@@ -20,6 +24,8 @@ public class MinecraftClientMixin {
 
     @Shadow @Nullable public Screen currentScreen;
 
+    @Shadow @Final public GameRenderer gameRenderer;
+
     @Inject(at = @At(value = "TAIL"), method = "getMusicType", cancellable = true)
     private void getMusicType(CallbackInfoReturnable<MusicSound> ci) {
         ci.setReturnValue(Sounds.MENU);
@@ -27,10 +33,17 @@ public class MinecraftClientMixin {
 
     @Inject(at = @At(value = "HEAD"), method = "setScreen")
     private void setScreen(Screen newScreen, CallbackInfo ci) {
-        if (newScreen instanceof AnimatableOwoScreen) {
-            Facelift.lastScreen = this.currentScreen;
-        } else {
-            Facelift.lastScreen = null;
+        Facelift.lastScreen = this.currentScreen;
+        if (newScreen != null) {
+            ((AnimatableScreen) newScreen).animate(
+                    Shaders.PANEL_ANIMATION_SHADER,
+                    () -> Shaders.PANEL_ANIMATION_SHADER.setUniformValue("Panels", 5),
+                    500,
+                    Easing.SINE
+            );
+        } else if (this.currentScreen != null) {
+            ((AnimatableScreen) this.gameRenderer).animate(Shaders.PANEL_ANIMATION_SHADER, () -> Shaders.PANEL_ANIMATION_SHADER.setUniformValue("Panels", 5), 500,
+                    Easing.SINE);
         }
     }
 

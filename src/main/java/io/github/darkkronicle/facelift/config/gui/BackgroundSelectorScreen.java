@@ -6,10 +6,10 @@ import io.github.darkkronicle.facelift.render.shader.Shaders;
 import io.github.darkkronicle.facelift.render.theme.Theme;
 import io.github.darkkronicle.facelift.render.theme.ThemeHandler;
 import io.github.darkkronicle.facelift.render.title.ModernTitleMenu;
-import io.github.darkkronicle.facelift.render.animation.AnimatableOwoScreen;
 import io.github.darkkronicle.facelift.render.background.BackgroundHandler;
 import io.github.darkkronicle.facelift.render.background.BackgroundRenderer;
 import io.github.darkkronicle.facelift.render.components.BackgroundSelector;
+import io.wispforest.owo.ui.base.BaseOwoScreen;
 import io.wispforest.owo.ui.container.Containers;
 import io.wispforest.owo.ui.container.GridLayout;
 import io.wispforest.owo.ui.container.ScrollContainer;
@@ -30,7 +30,7 @@ import java.io.IOException;
 import java.nio.file.Path;
 import java.util.List;
 
-public class BackgroundSelectorScreen extends AnimatableOwoScreen<VerticalFlowLayout> {
+public class BackgroundSelectorScreen extends BaseOwoScreen<VerticalFlowLayout> {
 
     private BackgroundRenderer renderer;
     private File selected;
@@ -39,7 +39,6 @@ public class BackgroundSelectorScreen extends AnimatableOwoScreen<VerticalFlowLa
     private File[] files;
 
     public BackgroundSelectorScreen(ModernTitleMenu screen, TTFFontRenderer font) {
-        super(screen, Shaders.PANEL_ANIMATION_SHADER, () -> Shaders.PANEL_ANIMATION_SHADER.setUniformValue("Panels", 5));
         parent = screen;
         this.font = font;
         this.renderer = parent.getBackground();
@@ -75,7 +74,6 @@ public class BackgroundSelectorScreen extends AnimatableOwoScreen<VerticalFlowLa
 
     @Override
     protected void build(VerticalFlowLayout rootComponent) {
-        super.build(rootComponent);
         Theme theme = ThemeHandler.getInstance().getConfiguredTheme();
         rootComponent.horizontalAlignment(HorizontalAlignment.CENTER);
         GridLayout grid = Containers.grid(Sizing.content(), Sizing.content(), (int) Math.ceil(files.length / 2f), 2);
@@ -114,7 +112,7 @@ public class BackgroundSelectorScreen extends AnimatableOwoScreen<VerticalFlowLa
     }
 
     @Override
-    protected void rawRender(MatrixStack matrices, int mouseX, int mouseY, float delta) {
+    public void render(MatrixStack matrices, int mouseX, int mouseY, float delta) {
         if (renderer != null) {
             renderer.render(matrices, mouseX, mouseY, delta);
 //            BlurMaskFramebuffer.useAndDraw(() -> {
@@ -124,7 +122,7 @@ public class BackgroundSelectorScreen extends AnimatableOwoScreen<VerticalFlowLa
         RenderUtil.drawRectangle(matrices, 0, 0, client.getWindow().getScaledWidth(), client.getWindow().getScaledHeight(),
                 FaceliftConfig.getInstance().getBackgroundOverlay().getValue()
         );
-        super.rawRender(matrices, mouseX, mouseY, delta);
+        super.render(matrices, mouseX, mouseY, delta);
     }
 
     @Override

@@ -11,12 +11,12 @@ import io.github.darkkronicle.facelift.render.components.BackgroundHorizontalFlo
 import io.github.darkkronicle.facelift.render.components.ButtonPagesFlow;
 import io.github.darkkronicle.facelift.render.components.CircleTextureComponent;
 import io.github.darkkronicle.facelift.render.components.CleanButtonComponent;
+import io.github.darkkronicle.facelift.render.screen.AnimatableScreen;
 import io.github.darkkronicle.facelift.render.shader.Shaders;
 import io.github.darkkronicle.facelift.render.theme.Theme;
 import io.github.darkkronicle.facelift.render.theme.ThemeHandler;
 import io.github.darkkronicle.facelift.render.background.BackgroundHandler;
 import io.github.darkkronicle.facelift.render.background.BackgroundRenderer;
-import io.github.darkkronicle.facelift.ui.components.*;
 import io.wispforest.owo.ui.container.Containers;
 import io.wispforest.owo.ui.container.FlowLayout;
 import io.wispforest.owo.ui.container.HorizontalFlowLayout;
@@ -28,6 +28,7 @@ import me.x150.renderer.renderer.font.TTFFontRenderer;
 import net.fabricmc.loader.api.FabricLoader;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.Element;
+import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.gui.screen.multiplayer.MultiplayerScreen;
 import net.minecraft.client.gui.screen.option.OptionsScreen;
 import net.minecraft.client.gui.screen.world.SelectWorldScreen;
@@ -48,7 +49,7 @@ public class ModernTitleMenu extends AbstractTitleMenu {
     private BackgroundRenderer background;
 
     public ModernTitleMenu() {
-        super(null, Shaders.PANEL_ANIMATION_SHADER, () -> Shaders.PANEL_ANIMATION_SHADER.setUniformValue("Panels", 5));
+        super();
     }
 
     @Override
@@ -81,8 +82,9 @@ public class ModernTitleMenu extends AbstractTitleMenu {
         return constructButton(buttonSize, texture, textureLength, text, onClick, theme.surface0(), theme.accent(), theme.text());
     }
 
-    private CleanButtonComponent constructButton(int buttonSize, Identifier texture, int textureLength, Text text, Runnable onClick,
-                                                 Color backgroundColor, Color borderColor, Color textTexture
+    private CleanButtonComponent constructButton(
+            int buttonSize, Identifier texture, int textureLength, Text text, Runnable onClick,
+            Color backgroundColor, Color borderColor, Color textTexture
     ) {
         CleanButtonComponent clean = new CleanButtonComponent(
                 Sizing.fixed(buttonSize), Sizing.fixed(buttonSize), 5, 8,
@@ -125,7 +127,8 @@ public class ModernTitleMenu extends AbstractTitleMenu {
         rootComponent.child(topBar);
         topBar.child(
                 new CleanButtonComponent(
-                        Sizing.content(), Sizing.content(), 5, 8, (button) -> client.setScreen(new BackgroundSelectorScreen(this, fontRenderer))
+                        Sizing.content(), Sizing.content(), 5, 8,
+                        (button) -> client.setScreen(new BackgroundSelectorScreen(this, fontRenderer))
                 ).cleanText(fontRenderer, Text.of("background"), Insets.of(3), convert(theme.text())).padding(Insets.of(3))
         );
         VerticalFlowLayout bottom = Containers.verticalFlow(Sizing.fill(100), Sizing.fill(100));
@@ -143,7 +146,9 @@ public class ModernTitleMenu extends AbstractTitleMenu {
         line.child(back);
 
         line.allowOverflow(true);
-        line.child(new CircleTextureComponent(new Identifier(Facelift.MOD_ID, "textures/gui/logo.png"), 0, 0, 191, 191, 191, 191, 85, 88).innerColor(convert(theme.crust())).outerColor(convert(theme.base())).zIndex(4));
+        line.child(new CircleTextureComponent(new Identifier(Facelift.MOD_ID, "textures/gui/logo.png"), 0, 0, 191, 191, 191, 191, 85,
+                88
+        ).innerColor(convert(theme.crust())).outerColor(convert(theme.base())).zIndex(4));
 
         ButtonPagesFlow game = new ButtonPagesFlow(Sizing.fill(100), Sizing.content(), convert(theme.base()), true);
         line.child(game);
@@ -175,19 +180,19 @@ public class ModernTitleMenu extends AbstractTitleMenu {
         play.addButton(
                 constructButton(
                         buttonSize, new Identifier(Facelift.MOD_ID, "textures/gui/user.png"), 80, Text.of("solo"),
-                        () -> client.setScreen(new SelectWorldScreen(this)), theme.surface0(), theme.accent(), theme.pop2()
+                        () -> setAndAnimate(new SelectWorldScreen(this)), theme.surface0(), theme.accent(), theme.pop2()
                 )
         );
         play.addButton(
                 constructButton(
                         buttonSize, new Identifier(Facelift.MOD_ID, "textures/gui/users.png"), 80, Text.of("multi"),
-                        () -> client.setScreen(new MultiplayerScreen(this)), theme.surface0(), theme.accent(), theme.pop2()
+                        () -> setAndAnimate(new MultiplayerScreen(this)), theme.surface0(), theme.accent(), theme.pop2()
                 )
         );
         play.addButton(
                 constructButton(
                         buttonSize, new Identifier(Facelift.MOD_ID, "textures/gui/door.png"), 80, Text.of("realms"),
-                        () -> client.setScreen(new RealmsMainScreen(this)), theme.surface0(), theme.accent(), theme.pop2()
+                        () -> setAndAnimate(new RealmsMainScreen(this)), theme.surface0(), theme.accent(), theme.pop2()
                 )
         );
         parent.addButton(
@@ -205,13 +210,13 @@ public class ModernTitleMenu extends AbstractTitleMenu {
             config.addButton(
                     constructButton(
                             buttonSize, new Identifier(Facelift.MOD_ID, "textures/gui/tools.png"), 80, Text.of("game"),
-                            () -> client.setScreen(new OptionsScreen(this, client.options)), theme.surface0(), theme.accent(), theme.pop1()
+                            () -> setAndAnimate(new OptionsScreen(this, client.options)), theme.surface0(), theme.accent(), theme.pop1()
                     )
             );
             config.addButton(
                     constructButton(
                             buttonSize, new Identifier(Facelift.MOD_ID, "textures/gui/tool.png"), 80, Text.of("mod"),
-                            () -> client.setScreen(new ModMenuSupplier().apply(this)), theme.surface0(), theme.accent(), theme.pop1()
+                            () -> setAndAnimate(new ModMenuSupplier().apply(this)), theme.surface0(), theme.accent(), theme.pop1()
                     )
             );
             parent.addButton(
@@ -227,7 +232,7 @@ public class ModernTitleMenu extends AbstractTitleMenu {
             parent.addButton(
                     constructButton(
                             buttonSize, new Identifier(Facelift.MOD_ID, "textures/gui/settings.png"), 80, Text.of("config"),
-                            () -> client.setScreen(new OptionsScreen(this, client.options)), theme.surface0(), theme.accent(), theme.pop1()
+                            () -> setAndAnimate(new OptionsScreen(this, client.options)), theme.surface0(), theme.accent(), theme.pop1()
                     )
             );
         }
@@ -238,10 +243,23 @@ public class ModernTitleMenu extends AbstractTitleMenu {
         rootComponent.child(bottom);
     }
 
+    private void setAndAnimate(Screen screen) {
+        MinecraftClient.getInstance().setScreen(screen);
+//        ((AnimatableScreen) screen).animate(
+//                Shaders.PANEL_ANIMATION_SHADER,
+//                () -> Shaders.PANEL_ANIMATION_SHADER.setUniformValue("Panels", 5),
+//                500,
+//                Easing.SINE
+//        );
+    }
+
     @Override
     public void renderBackground(MatrixStack matrices, int mouseX, int mouseY, float delta) {
         background.render(matrices, mouseX, mouseY, delta);
-        RenderUtil.drawRectangle(matrices, 0, 0, client.getWindow().getScaledWidth(), client.getWindow().getScaledHeight(), FaceliftConfig.getInstance().getBackgroundOverlay().getValue());
+        RenderUtil.drawRectangle(
+                matrices, 0, 0, client.getWindow().getScaledWidth(), client.getWindow().getScaledHeight(),
+                FaceliftConfig.getInstance().getBackgroundOverlay().getValue()
+        );
     }
 
 }

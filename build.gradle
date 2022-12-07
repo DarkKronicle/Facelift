@@ -55,6 +55,8 @@ dependencies {
     modImplementation "io.wispforest:owo-lib:${project.owo_version}"
 
     include modImplementation("com.github.0x3C50:Renderer:90737050df")
+    modImplementation "io.github.ladysnake:satin:${satin_version}"
+    include "io.github.ladysnake:satin:${satin_version}"
 
 }
 

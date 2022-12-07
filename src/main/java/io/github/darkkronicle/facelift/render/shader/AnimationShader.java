@@ -5,11 +5,13 @@ import io.wispforest.owo.ui.core.AnimatableProperty;
 import io.wispforest.owo.ui.core.Animation;
 import io.wispforest.owo.ui.core.Easing;
 import ladysnake.satin.api.managed.ManagedShaderEffect;
+import lombok.Getter;
 import net.minecraft.client.util.math.MatrixStack;
 import org.jetbrains.annotations.Nullable;
 
 public class AnimationShader {
 
+    @Getter
     private final ManagedShaderEffect shader;
     private final AnimatableProperty<AnimatableFloat> percentage;
     private final boolean zeroToOne;
@@ -17,7 +19,9 @@ public class AnimationShader {
     private final Renderable renderAfter;
     private final Runnable setConfig;
 
-    public AnimationShader(ManagedShaderEffect shader, boolean zeroToOne, Renderable renderBefore, Renderable renderAfter, @Nullable Runnable setConfig) {
+    public AnimationShader(
+            ManagedShaderEffect shader, boolean zeroToOne, Renderable renderBefore, Renderable renderAfter, @Nullable Runnable setConfig
+    ) {
         this.shader = shader;
         this.zeroToOne = zeroToOne;
         this.percentage = AnimatableProperty.of(new AnimatableFloat(zeroToOne ? 0 : 1));
@@ -28,8 +32,8 @@ public class AnimationShader {
 
     public void render(MatrixStack matrices, float delta, int mouseX, int mouseY) {
         percentage.update(delta);
-        renderBefore.render(matrices, delta, mouseX, mouseY);
-        AnimationFramebuffer.use(shader, setConfig, getPercentage(),() -> renderAfter.render(matrices, delta, mouseX, mouseY));
+        BeforeFramebuffer.use(() -> renderBefore.render(matrices, delta, mouseX, mouseY));
+        AnimationFramebuffer.use(shader, setConfig, getPercentage(), () -> renderAfter.render(matrices, delta, mouseX, mouseY));
     }
 
     public float getPercentage() {

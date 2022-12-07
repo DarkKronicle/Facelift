@@ -1,15 +1,16 @@
 {
   "targets": [
-    "swap"
+    "swap",
+    "animationFbo"
   ],
   "passes": [
     {
       "name": "facelift:panel_animation",
-      "intarget": "minecraft:main",
+      "intarget": "animationFbo",
       "outtarget": "swap"
     },
     {
-      "name": "facelift:panel_animation",
+      "name": "blit",
       "intarget": "swap",
       "outtarget": "minecraft:main"
     }

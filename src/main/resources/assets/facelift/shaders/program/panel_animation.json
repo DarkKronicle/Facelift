@@ -9,6 +9,7 @@
   "attributes": [ "Position" ],
   "samplers": [
     { "name": "DiffuseSampler" },
+    { "name": "vanilla" },
     { "name": "AfterSampler" }
   ],
   "uniforms": [
