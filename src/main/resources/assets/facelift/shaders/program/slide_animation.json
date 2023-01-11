@@ -5,7 +5,7 @@
     "dstrgb": "1-srcalpha"
   },
   "vertex": "sobel",
-  "fragment": "facelift:panel_animation",
+  "fragment": "facelift:slide_animation",
   "attributes": [ "Position" ],
   "samplers": [
     { "name": "DiffuseSampler" },
@@ -16,6 +16,6 @@
     { "name": "InSize",      "type": "float",     "count": 2,  "values": [ 1.0, 1.0 ] },
     { "name": "OutSize",     "type": "float",     "count": 2,  "values": [ 1.0, 1.0 ] },
     { "name": "Percentage",  "type": "float",     "count": 1,  "values": [ 1.0 ] },
-    { "name": "Panels",      "type": "int",       "count": 1,  "values": [ 5 ] }
+    { "name": "SlideDir",   "type": "float",      "count": 2,  "values": [ 1.0, 0.0 ] }
   ]
 }

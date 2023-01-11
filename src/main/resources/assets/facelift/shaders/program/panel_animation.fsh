@@ -20,21 +20,11 @@ vec4 blend(vec4 source, vec4 dest, float alpha) {
 
 void main() {
     float width = InSize[0];
-    float height = InSize[1];
     float panelWidth = width / Panels;
     float x = mod(texCoord[0] / oneTexel[0], panelWidth);
     if (x <= panelWidth * Percentage) {
-        vec4 color = texture(AfterSampler, texCoord);
-        if (color.a < 1) {
-            color = blend(texture(vanilla, texCoord), color, 1 - color.a);
-        }
-        fragColor = color;
+        fragColor = texture(AfterSampler, texCoord);
     } else {
-        vec4 color = texture(DiffuseSampler, texCoord);
-        if (color.a < 1) {
-            color = blend(texture(vanilla, texCoord), color, 1 - color.a);
-        }
-        fragColor = color;
+        fragColor = texture(DiffuseSampler, texCoord);
     }
-    //    fragColor = texture(vanilla, texCoord);
 }

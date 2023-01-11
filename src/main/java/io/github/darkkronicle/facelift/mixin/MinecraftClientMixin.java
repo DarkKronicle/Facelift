@@ -36,13 +36,13 @@ public class MinecraftClientMixin {
         Facelift.lastScreen = this.currentScreen;
         if (newScreen != null) {
             ((AnimatableScreen) newScreen).animate(
-                    Shaders.PANEL_ANIMATION_SHADER,
-                    () -> Shaders.PANEL_ANIMATION_SHADER.setUniformValue("Panels", 5),
-                    500,
+                    Shaders.PANEL_ANIMATION,
+                    () -> {},
+                    400,
                     Easing.SINE
             );
         } else if (this.currentScreen != null) {
-            ((AnimatableScreen) this.gameRenderer).animate(Shaders.PANEL_ANIMATION_SHADER, () -> Shaders.PANEL_ANIMATION_SHADER.setUniformValue("Panels", 5), 500,
+            ((AnimatableScreen) this.gameRenderer).animate(Shaders.PANEL_ANIMATION, () -> Shaders.PANEL_ANIMATION.setUniformValue("Panels", 5), 500,
                     Easing.SINE);
         }
     }

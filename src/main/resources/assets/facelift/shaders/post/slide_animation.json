@@ -5,7 +5,7 @@
   ],
   "passes": [
     {
-      "name": "facelift:panel_animation",
+      "name": "facelift:slide_animation",
       "intarget": "animationFbo",
       "outtarget": "swap"
     },

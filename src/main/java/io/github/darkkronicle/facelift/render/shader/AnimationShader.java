@@ -32,8 +32,8 @@ public class AnimationShader {
 
     public void render(MatrixStack matrices, float delta, int mouseX, int mouseY) {
         percentage.update(delta);
-        BeforeFramebuffer.use(() -> renderBefore.render(matrices, delta, mouseX, mouseY));
-        AnimationFramebuffer.use(shader, setConfig, getPercentage(), () -> renderAfter.render(matrices, delta, mouseX, mouseY));
+        SnapshotFramebuffer.use(() -> renderBefore.render(matrices, delta, mouseX, mouseY));
+        DoubleRenderFramebuffer.use(shader, setConfig, getPercentage(), () -> renderAfter.render(matrices, delta, mouseX, mouseY));
     }
 
     public float getPercentage() {
